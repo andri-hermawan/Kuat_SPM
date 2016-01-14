@@ -1,0 +1,127 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Manage Employee</h1>
+</div>
+<div class="wrapper-md">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            List Employee, authenticated users only read. Only superman can create user
+        </div>
+        <div class="panel-body b-b b-light">
+            Search:
+            <input id="filter" type="text" class="form-control input-sm w-sm inline m-r" />
+        </div>
+        <div>
+            <table class="table m-b-none" ui-jq="footable" data-filter="#filter" data-page-size="5">
+                <thead>
+                    <tr>
+                        <th data-toggle="true">
+                            Full Name
+                        </th>
+                        <th>
+                            Created
+                        </th>
+                        <th data-hide="phone,tablet">
+                            Phone Number
+                        </th>
+                        <th data-hide="phone,tablet">
+                            Username
+                        </th>
+                        <th data-hide="phone">
+                            Role
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="employee in Employees">
+                        <td>{{employee.firstName}} {{employee.lastName}}</td>
+                        <td data-value="{{employee.created}}">{{momentFromnow(employee.created)}}</td>
+                        <td>{{employee.phone}}</td>
+                        <td>{{employee.username}}<br><pre>{{employee}}</pre></td>
+                        <td data-value="{{employee.role}}">
+                          <span ng-if="employee.role == 'superman'" class="label bg-danger" title="Active">Superman</span>
+                          <span ng-if="employee.role == 'developer'" class="label bg-success" title="Active">Developer</span>
+                          <span ng-if="employee.role == 'accounting'" class="label bg-warning" title="Active">Accounting</span>
+                          <span ng-if="employee.role == 'pm'" class="label bg-info" title="Active">Project Manager</span>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="hide-if-no-paging">
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <ul class="pagination"></ul>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="wrapper-md" ng-show="currentUser.role == 'superman'">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Bikin employee baru. <b>Superman only.</b> Selain superman tidak dapat melihat form ini, dan jika selain superman mengakses langsung di REST maka akan dapet respon 401 dan otomatis logout (jika posisi loged in).
+        </div>
+        <form name="form" class="form-validation">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="h4">Register</span>
+                </div>
+                <div class="panel-body">
+                    <p class="text-muted">Please fill the information to continue</p>
+                    <div class="form-group pull-in clearfix">
+                        <div class="col-sm-6">
+                            <label>First Name</label>
+                            <input type="text" class="form-control" name="firstname" ng-model="newUser.firstName" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Last Name</label>
+                            <input type="text" class="form-control" name="lastname" required ng-model="newUser.lastName">
+                        </div>
+                    </div>
+                    <div class="form-group pull-in clearfix">
+                        <div class="col-sm-6">
+                            <label>Username <em class="text-muted">(allow 'a-zA-Z0-9', 4-10 length)</em></label>
+                            <input type="text" class="form-control" ng-model="newUser.username" ng-pattern="/^[a-zA-Z0-9]{4,10}$/" required>
+                        </div>
+                        <div class="col-sm-6">
+                        <label>User role</label>
+                            <select class="form-control" ng-model="newUser.role" required>
+                                <option value="developer">Developer</option>
+                                <option value="superman">Superman</option>
+                                <option value="accounting">Accounting</option>
+                                <option value="pm">Project Manager</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" ng-model="newUser.email" required>
+                    </div>
+                    <div class="form-group pull-in clearfix">
+                        <div class="col-sm-6">
+                            <label>Enter password</label>
+                            <input type="password" class="form-control" name="password" ng-model="password" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Confirm password</label>
+                            <input type="password" class="form-control" name="confirm_password" required ng-model="confirm_password" ui-validate=" '$value==password' " ui-validate-watch=" 'password' ">
+                            <span ng-show='form.confirm_password.$error.validator'>Passwords do not match!</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" class="form-control" placeholder="(XXX) XXXX XXX" ng-model="newUser.phone" required>
+                    </div>
+                    <div class="checkbox">
+                        <label class="i-checks">
+                            <input type="checkbox" ng-model="agree" required><i></i> Semua input sudah benar
+                        </label>
+                    </div>
+                </div>
+                <footer class="panel-footer text-right bg-light lter">
+                    <button ng-click="register()" type="submit" class="btn btn-success" ng-disabled="form.$invalid">Submit</button>
+                </footer>
+            </div>
+        </form>
+    </div>
+</div>

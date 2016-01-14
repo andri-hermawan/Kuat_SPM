@@ -1,0 +1,160 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">List function</h1>
+</div>
+<div class="wrapper-md">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="label bg-danger pull-right m-t-xs">{{functions.length}}</span> Summary
+                </div>
+                <table class="table table-striped m-b-none">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="func in functions">
+                            <td>
+                                {{func.name}}
+                            </td>
+                            <td>{{func.link}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading font-bold">Add new Function</div>
+                <div class="panel-body">
+                    <form role="form" name="form">
+                        <div class="form-group">
+                            <label>Name <em class="text-muted">(allow 'a-zA-Z0-9', 4-20 length)</em></label>
+                            <input type="text" class="form-control" placeholder="Function name" ng-model="addNew.name" ng-pattern="/^[a-zA-Z0-9]{4,20}$/" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Link <em class="text-muted">(allow 'a-zA-Z0-9', 4-50 length)</em></label>
+                            <input type="password" class="form-control" placeholder="Function link" ng-model="addNew.link" ng-pattern="/^[a-zA-Z0-9]{4,50}$/" required>
+                        </div>
+                        <div class="form-group">
+                            <label>User Role</label>
+                            <select name="account" class="form-control m-b" required ng-model="addNew.role">
+                                <option value="superman">Superman</option>
+                                <option value="pm">Project Manager</option>
+                                <option value="accounting">Accounting</option>
+                                <option value="developer">Developer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                Activation status
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="i-switch m-t-xs m-r">
+                                    <input ng-model="addNew.status" type="checkbox"/>
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary" ng-disabled="form.$invalid" ng-click="addNewFunction()">Submit</button>
+                        <em class="text-muted" ng-if="form.$invalid">Button dissabled. Form is invalid</em>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Responsive Table
+        </div>
+        <div class="row wrapper">
+            <div class="col-sm-5 m-b-xs">
+                <select class="input-sm form-control w-sm inline v-middle">
+                    <option value="0">Bulk action</option>
+                    <option value="1">Delete selected</option>
+                    <option value="2">Bulk edit</option>
+                    <option value="3">Export</option>
+                </select>
+                <button class="btn btn-sm btn-default">Apply</button>
+            </div>
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-3">
+                <div class="input-group">
+                    <input type="text" class="input-sm form-control" placeholder="Search">
+                    <span class="input-group-btn">
+            <button class="btn btn-sm btn-default" type="button">Go!</button>
+          </span>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th style="width:20px;">
+                            <label class="i-checks m-b-none">
+                                <input type="checkbox"><i></i>
+                            </label>
+                        </th>
+                        <th>Name</th>
+                        <th>Link</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th style="width:30px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="funct in functions">
+                        <td>
+                            <label class="i-checks m-b-none">
+                                <input type="checkbox" name="post[]"><i></i></label>
+                        </td>
+                        <td>{{funct.name}}</td>
+                        <td>{{funct.link}}</td>
+                        <td>{{moment(funct.created)}}
+                            <br>{{momentFromnow(funct.created)}}</td>
+                        <td>{{moment(funct.updated)}}
+                            <br>{{momentFromnow(funct.updated)}}</td>
+                        <td>
+                            <label class="i-switch m-t-xs m-r">
+                                <input type="checkbox" ng-checked="funct.status" ng-click="activationTogle(funct)">
+                                <i></i>
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer class="panel-footer">
+            <div class="row">
+                <div class="col-sm-4 hidden-xs">
+                    <select class="input-sm form-control w-sm inline v-middle">
+                        <option value="0">Bulk action</option>
+                        <option value="1">Delete selected</option>
+                        <option value="2">Bulk edit</option>
+                        <option value="3">Export</option>
+                    </select>
+                    <button class="btn btn-sm btn-default">Apply</button>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
+                </div>
+                <div class="col-sm-4 text-right text-center-xs">
+                    <ul class="pagination pagination-sm m-t-none m-b-none">
+                        <li><a href><i class="fa fa-chevron-left"></i></a></li>
+                        <li><a href>1</a></li>
+                        <li><a href>2</a></li>
+                        <li><a href>3</a></li>
+                        <li><a href>4</a></li>
+                        <li><a href>5</a></li>
+                        <li><a href><i class="fa fa-chevron-right"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
