@@ -9,20 +9,11 @@
     "name": "mongo",
     "connector": "mongodb"
   },
-  "mysql": {
-    "host": "127.0.0.1",
-    "port": 0,
-    "database": "spm",
-    "password": "satunol",
-    "name": "mysql",
-    "connector": "mysql",
-    "user": "root"
-  },
   "db_spm": {
     "host": "127.0.0.1",
     "port": 0,
-    "database": "spm",
-    "password": "satunol",
+    "database": "medical_db",
+    "password": "toor",
     "name": "db_spm",
     "connector": "mysql",
     "user": "root"
